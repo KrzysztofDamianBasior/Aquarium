@@ -1,0 +1,24 @@
+# Game parametric file.
+# A comment starts with the # character and lasts until the end of the line.
+# Parameters are written as {name}={value} pairs.
+#
+# 1. Core
+gameName=CatchAndGo
+numberOfLevels=4
+levelName=level#
+extensionName=txt
+#
+# 2. Difficulty level
+numberOfDifficultyLevels=5
+amountOfChangeInDifficulty=29
+#
+# 3. Different sizes
+initialBoardWidth=793
+initialBoardHeight=530
+initialWidthOfTheGameObjectAsAPercentageOfBoardInitialWidth=7.7626357
+#
+# 4. Background and objects
+background=graphicFile
+menuBackground=menuBackground.jpg
+gameObjects=graphicFile
+objectFile=fish1.png
