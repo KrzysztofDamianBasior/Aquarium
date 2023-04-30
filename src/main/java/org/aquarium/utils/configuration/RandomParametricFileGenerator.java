@@ -1,5 +1,7 @@
 package org.aquarium.utils.configuration;
 
+import org.aquarium.exceptions.ExceptionHandler;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -9,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.util.Properties;
+
 
 public class RandomParametricFileGenerator {
     final private String lsep = System.getProperty("line.separator");
@@ -30,9 +33,9 @@ public class RandomParametricFileGenerator {
 
     public static void main(String... args) {
         RandomParametricFileGenerator pfg = new RandomParametricFileGenerator();
-        String parametricFileName = "./src/main/resources/configuration/par.txt";
-        pfg.generateAndSaveRandomParametricFile(parametricFileName);
-        pfg.loadAndPrintParametricFile(parametricFileName);
+        String parametricFilePathname = "./src/main/resources/configuration/parametricFile.txt";
+        pfg.generateAndSaveRandomParametricFile(parametricFilePathname);
+        pfg.loadAndPrintParametricFile(parametricFilePathname);
     }
 
     private String drawString(String... strings) {
@@ -54,18 +57,6 @@ public class RandomParametricFileGenerator {
             throw new IllegalArgumentException("max must be greater than min");
         }
 
-    }
-
-    void writeMessagesAndExit(Object... messagesTable) {
-        for (int i = 0; i < messagesTable.length; i++) {
-            System.err.print((i + 1) + ": ");
-            if (messagesTable[i] instanceof Throwable) {
-                ((Throwable) messagesTable[i]).printStackTrace();
-            } else {
-                System.err.println(messagesTable[i].toString());
-            }
-        }
-        System.exit(-1);
     }
 
     void generateAndSaveRandomParametricFile(String fileName) {
@@ -99,35 +90,35 @@ public class RandomParametricFileGenerator {
                     + "# 4. Background and objects"
             );
             if (randomInt(0, 1) == 0) {
-                pw.println("background=plain" + lsep
-                        + "backgroundColor=" + randomInt(0, 255) + " " + randomInt(0, 255) + " " + randomInt(0, 255));
+                pw.println("menuBackground=plain" + lsep
+                        + "menuBackgroundColor=" + randomInt(0, 255) + " " + randomInt(0, 255) + " " + randomInt(0, 255));
             } else {
-                pw.println("background=graphicFile" + lsep
-                        + "menuBackground=menuBackground.jpg");
+                pw.println("menuBackground=graphicFile" + lsep
+                        + "menuBackgroundFilePathname=src/main/resources/assets/backgrounds/menuBackground.jpg");
             }
             if (randomInt(0, 1) == 0) {
-                pw.println("gameObjects=geometricFigures" + lsep
-                        + "gameObjectFigure=" + drawString(objectFigures));
+                pw.println("gameObjects=geometricFigures");
+//                        + lsep + "gameObjectFigure=" + drawString(objectFigures));
             } else {
-                pw.println("gameObjects=graphicFile" + lsep
-                        + "objectFile=fish1.png");
+                pw.println("gameObjects=graphicFile");
+//                        + lsep + "objectFile=fish1.png");
             }
             pw.close();
         } catch (IOException ioe) {
-            writeMessagesAndExit("Failed to open parametric file", fileName, ioe);
+            ExceptionHandler.writeMessagesAndExit("Failed to open parametric file", fileName, ioe);
         }
     }
 
-    void loadAndPrintParametricFile(String fileName) {
+    void loadAndPrintParametricFile(String parametricFilePathname) {
         Properties props = new Properties();
-        try (Reader r = new BufferedReader(new FileReader(fileName))) {
+        try (Reader r = new BufferedReader(new FileReader(parametricFilePathname))) {
             props.load(r);
         } catch (FileNotFoundException fnfe) {
-            writeMessagesAndExit("Parametric file not found",
-                    fileName, fnfe);
+            ExceptionHandler.writeMessagesAndExit("Parametric file not found",
+                    parametricFilePathname, fnfe);
         } catch (IOException ioe) {
-            writeMessagesAndExit("There was an error reading the parametric file",
-                    fileName, ioe);
+            ExceptionHandler.writeMessagesAndExit("There was an error reading the parametric file",
+                    parametricFilePathname, ioe);
         }
         props.forEach((parameterName, parameterValue) -> {
             System.out.println("[" + parameterName + "]=[" + parameterValue + "]");

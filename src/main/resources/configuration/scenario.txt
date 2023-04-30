@@ -1,0 +1,7 @@
+#Game scenario generator
+#It allows you to generate scenarios for separate parametric files
+#
+numberOfLevels=4
+levelsMusicFilesPathnames=src/main/resources/assets/musicFiles/[NoCopyrightMusic]Island-MBB.WAV src/main/resources/assets/musicFiles/[NoCopyrightMusic]LastSummer-Ikson.WAV src/main/resources/assets/musicFiles/[NoCopyrightMusic]ColdSun-Del.WAV src/main/resources/assets/musicFiles/[NoCopyrightMusic]Island-MBB.WAV 
+levelsBackgroundFilesPathnames=src/main/resources/assets/backgrounds/gameBackground2.jpg src/main/resources/assets/backgrounds/gameBackground2.jpg src/main/resources/assets/backgrounds/gameBackground1.jpg src/main/resources/assets/backgrounds/gameBackground4.jpg 
+levelsDurationTimeValues=50 58 46 52 

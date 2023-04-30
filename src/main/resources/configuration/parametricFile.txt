@@ -1,0 +1,23 @@
+# Game parametric file.
+# A comment starts with the # character and lasts until the end of the line.
+# Parameters are written as {name}={value} pairs.
+#
+# 1. Core
+gameName=Aqua
+numberOfLevels=4
+levelName=level
+extensionName=txt
+#
+# 2. Difficulty level
+numberOfDifficultyLevels=4
+amountOfChangeInDifficulty=39
+#
+# 3. Different sizes
+initialBoardWidth=928
+initialBoardHeight=539
+initialWidthOfTheGameObjectAsAPercentageOfBoardInitialWidth=7.2880654
+#
+# 4. Background and objects
+menuBackground=graphicFile
+menuBackgroundFilePathname=src/main/resources/assets/backgrounds/menuBackground.jpg
+gameObjects=graphicFile
