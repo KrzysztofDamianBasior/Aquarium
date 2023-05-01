@@ -9,7 +9,6 @@ public class TimeContainer implements ActionListener {
 
     int time;
     Timer clock;
-    int numberOfLevels;
     private ArrayList<Integer> levelsDurationTime = new ArrayList<Integer>(200);
     private static final TimeContainer instance = new TimeContainer();
 
@@ -22,7 +21,7 @@ public class TimeContainer implements ActionListener {
         time = 0;
         clock = new Timer(1000, this);
         clock.start();
-        numberOfLevels = gp.getNumberOfLevels();
+        int numberOfLevels = gp.getNumberOfLevels();
 
         for (int i = 0; i < numberOfLevels; i++) {
             levelsDurationTime.add(gp.getLevelDurationTimeValue(i));
