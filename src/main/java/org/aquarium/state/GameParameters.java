@@ -1,4 +1,4 @@
-package org.aquarium.utils.configuration;
+package org.aquarium.state;
 
 import org.aquarium.exceptions.ExceptionHandler;
 
@@ -9,13 +9,13 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Properties;
 
-public class Parser {
+public class GameParameters {
     String parametricFilePathname = "./src/main/resources/configuration/parametricFile.txt";
     String scenarioFilePathname = "./src/main/resources/configuration/scenario.txt";
 
-    private static final Parser instance = new Parser();
+    private static final GameParameters instance = new GameParameters();
 
-    public static Parser getInstance() {
+    public static GameParameters getInstance() {
         return instance;
     }
 
@@ -108,7 +108,7 @@ public class Parser {
     private String gameObjects = "";
     private int[] menuBackgroundColor = {};
 
-    private Parser() {
+    private GameParameters() {
 
         Properties props = new Properties();
         try (Reader r = new BufferedReader(new FileReader(parametricFilePathname))) {
@@ -183,7 +183,7 @@ public class Parser {
 
     public static void main(String[] args) {
         System.out.println("ok");
-        Parser kl = Parser.getInstance();
+        GameParameters kl = GameParameters.getInstance();
         System.out.print(
                 "parametric file pathname: " + kl.getParametricFilePathname() + "\n" +
                         "scenario file pathname: " + kl.getScenarioFilePathname() + "\n" +
