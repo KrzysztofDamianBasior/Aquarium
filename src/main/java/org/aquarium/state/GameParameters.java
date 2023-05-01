@@ -165,20 +165,8 @@ public class GameParameters {
         for (int i = 0; i < numberOfScenarioLevels; i++) {
             levelsDurationTimeValues[i] = Integer.parseInt(tempLevelsTimeValues[i]);
         }
-
-
-        levelsBackgroundFilesPathnames = new String[numberOfScenarioLevels];
-        String[] tempLevelsBackgroundFiles = (props2.getProperty("levelsBackgroundFilesPathnames")).split(" ");
-        for (int i = 0; i < numberOfScenarioLevels; i++) {
-            levelsBackgroundFilesPathnames[i] = tempLevelsBackgroundFiles[i];
-        }
-
-
-        levelsMusicFilesPathnames = new String[numberOfScenarioLevels];
-        String[] tempLevelsMusicFiles = (props2.getProperty("levelsMusicFilesPathnames")).split(" ");
-        for (int i = 0; i < numberOfScenarioLevels; i++) {
-            levelsMusicFilesPathnames[i] = tempLevelsMusicFiles[i];
-        }
+        levelsBackgroundFilesPathnames =  (props2.getProperty("levelsBackgroundFilesPathnames")).split(" ");
+        levelsMusicFilesPathnames = (props2.getProperty("levelsMusicFilesPathnames")).split(" ");
     }
 
     public static void main(String[] args) {
