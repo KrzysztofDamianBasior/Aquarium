@@ -1,7 +1,7 @@
-package org.aquarium.exceptions;
+package org.aquarium.utils.logger;
 
-public final class ExceptionHandler {
-    private ExceptionHandler(){}
+public final class Logger {
+    private Logger(){}
     public static void writeMessagesAndExit(Object... messagesTable) {
         for (int i = 0; i < messagesTable.length; i++) {
             System.err.print((i + 1) + ": ");

@@ -3,14 +3,14 @@
 # Parameters are written as {name}={value} pairs.
 #
 # 1. Core
-gameName=Aqua
+gameName=Aquarium
 numberOfLevels=4
 levelName=level
-extensionName=txt
+extensionName=jar
 #
 # 2. Difficulty level
-numberOfDifficultyLevels=4
-amountOfChangeInDifficulty=39
+numberOfDifficultyLevels=3
+amountOfChangeInDifficulty=40
 #
 # 3. Different sizes
 initialBoardWidth=928

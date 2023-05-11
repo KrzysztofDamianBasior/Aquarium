@@ -1,6 +1,6 @@
 package org.aquarium.utils.configuration;
 
-import org.aquarium.exceptions.ExceptionHandler;
+import org.aquarium.utils.logger.Logger;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -54,7 +54,7 @@ public class RandomGameScenarioGenerator {
             pw.print(lsep);
             pw.close();
         } catch (IOException ioe) {
-            ExceptionHandler.writeMessagesAndExit("Failed to open scenario file ", scenarioFilePathname, ioe);
+            Logger.writeMessagesAndExit("Failed to open scenario file ", scenarioFilePathname, ioe);
         }
     }
 
@@ -64,10 +64,10 @@ public class RandomGameScenarioGenerator {
         try (Reader r = new BufferedReader(new FileReader(fileName))) {
             props.load(r);
         } catch (FileNotFoundException fnfe) {
-            ExceptionHandler.writeMessagesAndExit("Scenario file not found",
+            Logger.writeMessagesAndExit("Scenario file not found",
                     fileName, fnfe);
         } catch (IOException ioe) {
-            ExceptionHandler.writeMessagesAndExit("There was an error reading the scenario file",
+            Logger.writeMessagesAndExit("There was an error reading the scenario file",
                     fileName, ioe);
         }
         props.forEach((parameterName, parameterValue) -> {

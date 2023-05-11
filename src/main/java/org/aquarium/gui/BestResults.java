@@ -1,6 +1,6 @@
 package org.aquarium.gui;
 
-import org.aquarium.exceptions.ExceptionHandler;
+import org.aquarium.utils.logger.Logger;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -18,7 +18,7 @@ public class BestResults {
     private int[] scoresTable;
     private String[] datesTable;
 
-    private final String bestResultsPathname = "./src/main/resources/configuration/bestResults";
+    private final String bestResultsPathname = "./src/main/resources/configuration/bestResults.txt";
     private static final BestResults instance = new BestResults();
 
     public static BestResults getInstance() {
@@ -32,11 +32,11 @@ public class BestResults {
         try (Reader r = new BufferedReader(new FileReader(bestResultsPathname))) {
             props.load(r);
         } catch (FileNotFoundException fnfe) {
-            ExceptionHandler.writeMessagesAndExit("\r\n" +
+            Logger.writeMessagesAndExit("\r\n" +
                             "parametric file not found",
                     "BestResults", fnfe);
         } catch (IOException ioe) {
-            ExceptionHandler.writeMessagesAndExit("Occurred error in reading a parametric file",
+            Logger.writeMessagesAndExit("Occurred error in reading a parametric file",
                     "BestResults", ioe);
         }
 
@@ -60,12 +60,12 @@ public class BestResults {
                 break;
             }
         }
-        if (isAmongTheBest == true) {
+        if (isAmongTheBest) {
             PrintWriter pw = null;
             try {
                 pw = new PrintWriter(new BufferedWriter(new FileWriter(bestResultsPathname)));
             } catch (IOException ioe) {
-                ExceptionHandler.writeMessagesAndExit("Failed to open the best results file", "BestResults", ioe);
+                Logger.writeMessagesAndExit("Failed to open the best results file", "BestResults", ioe);
             }
 
             for (int i = 9; i > place; i--) {

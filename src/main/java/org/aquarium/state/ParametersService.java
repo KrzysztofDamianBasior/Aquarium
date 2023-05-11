@@ -1,6 +1,6 @@
 package org.aquarium.state;
 
-import org.aquarium.exceptions.ExceptionHandler;
+import org.aquarium.utils.logger.Logger;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -9,15 +9,16 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Properties;
 
-public class GameParameters {
-    String parametricFilePathname = "./src/main/resources/configuration/parametricFile.txt";
+public class ParametersService {
+    String parametricFilePathname = "./src/main/resources/configuration/parameters.txt";
     String scenarioFilePathname = "./src/main/resources/configuration/scenario.txt";
 
-    private static final GameParameters instance = new GameParameters();
+    private static final ParametersService instance = new ParametersService();
 
-    public static GameParameters getInstance() {
+    public static ParametersService getInstance() {
         return instance;
     }
+
 
     public int getNumberOfLevels() {
         return numberOfLevels;
@@ -87,7 +88,7 @@ public class GameParameters {
         return menuBackgroundColor[i];
     }
 
-    public String getGameObjects() {
+    public String getGameObjectsType() {
         return gameObjects;
     }
 
@@ -108,16 +109,15 @@ public class GameParameters {
     private String gameObjects = "";
     private int[] menuBackgroundColor = {};
 
-    private GameParameters() {
-
+    private ParametersService() {
         Properties props = new Properties();
         try (Reader r = new BufferedReader(new FileReader(parametricFilePathname))) {
             props.load(r);
         } catch (FileNotFoundException fnfe) {
-            ExceptionHandler.writeMessagesAndExit("Parametric file not found",
+            Logger.writeMessagesAndExit("Parametric file not found",
                     parametricFilePathname, fnfe);
         } catch (IOException ioe) {
-            ExceptionHandler.writeMessagesAndExit("There was an error reading the parametric file",
+            Logger.writeMessagesAndExit("There was an error reading the parametric file",
                     parametricFilePathname, ioe);
         }
         gameName = props.getProperty("gameName");
@@ -148,10 +148,10 @@ public class GameParameters {
         try (Reader r = new BufferedReader(new FileReader(scenarioFilePathname))) {
             props2.load(r);
         } catch (FileNotFoundException fnfe) {
-            ExceptionHandler.writeMessagesAndExit("Parametric file not found",
+            Logger.writeMessagesAndExit("Parametric file not found",
                     scenarioFilePathname, fnfe);
         } catch (IOException ioe) {
-            ExceptionHandler.writeMessagesAndExit("There was an error reading the parametric file",
+            Logger.writeMessagesAndExit("There was an error reading the parametric file",
                     scenarioFilePathname, ioe);
         }
         int numberOfScenarioLevels = Integer.parseInt(props2.getProperty("numberOfLevels"));
@@ -165,13 +165,13 @@ public class GameParameters {
         for (int i = 0; i < numberOfScenarioLevels; i++) {
             levelsDurationTimeValues[i] = Integer.parseInt(tempLevelsTimeValues[i]);
         }
-        levelsBackgroundFilesPathnames =  (props2.getProperty("levelsBackgroundFilesPathnames")).split(" ");
+        levelsBackgroundFilesPathnames = (props2.getProperty("levelsBackgroundFilesPathnames")).split(" ");
         levelsMusicFilesPathnames = (props2.getProperty("levelsMusicFilesPathnames")).split(" ");
     }
 
     public static void main(String[] args) {
         System.out.println("ok");
-        GameParameters kl = GameParameters.getInstance();
+        ParametersService kl = ParametersService.getInstance();
         System.out.print(
                 "parametric file pathname: " + kl.getParametricFilePathname() + "\n" +
                         "scenario file pathname: " + kl.getScenarioFilePathname() + "\n" +
@@ -185,7 +185,7 @@ public class GameParameters {
                         "extension name: " + kl.getExtensionName() + "\n" +
                         "amount of change in difficulty: " + kl.getAmountOfChangeInDifficulty() + "\n" +
                         "initial width of the game object as a percentage of board initial width: " + kl.getInitialWidthOfTheGameObjectAsAPercentageOfBoardInitialWidth() + "\n" +
-                        "game objects: " + kl.getGameObjects() + "\n" +
+                        "game objects: " + kl.getGameObjectsType() + "\n" +
                         "menu background: "
         );
         if (kl.getMenuBackground().equals("plain"))

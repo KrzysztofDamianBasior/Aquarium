@@ -1,6 +1,6 @@
 package org.aquarium.utils.configuration;
 
-import org.aquarium.exceptions.ExceptionHandler;
+import org.aquarium.utils.logger.Logger;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -33,7 +33,7 @@ public class RandomParametricFileGenerator {
 
     public static void main(String... args) {
         RandomParametricFileGenerator pfg = new RandomParametricFileGenerator();
-        String parametricFilePathname = "./src/main/resources/configuration/parametricFile.txt";
+        String parametricFilePathname = "./src/main/resources/configuration/parameters.txt";
         pfg.generateAndSaveRandomParametricFile(parametricFilePathname);
         pfg.loadAndPrintParametricFile(parametricFilePathname);
     }
@@ -98,14 +98,12 @@ public class RandomParametricFileGenerator {
             }
             if (randomInt(0, 1) == 0) {
                 pw.println("gameObjects=geometricFigures");
-//                        + lsep + "gameObjectFigure=" + drawString(objectFigures));
             } else {
                 pw.println("gameObjects=graphicFile");
-//                        + lsep + "objectFile=fish1.png");
             }
             pw.close();
         } catch (IOException ioe) {
-            ExceptionHandler.writeMessagesAndExit("Failed to open parametric file", fileName, ioe);
+            Logger.writeMessagesAndExit("Failed to open parametric file", fileName, ioe);
         }
     }
 
@@ -114,15 +112,13 @@ public class RandomParametricFileGenerator {
         try (Reader r = new BufferedReader(new FileReader(parametricFilePathname))) {
             props.load(r);
         } catch (FileNotFoundException fnfe) {
-            ExceptionHandler.writeMessagesAndExit("Parametric file not found",
+            Logger.writeMessagesAndExit("Parametric file not found",
                     parametricFilePathname, fnfe);
         } catch (IOException ioe) {
-            ExceptionHandler.writeMessagesAndExit("There was an error reading the parametric file",
+            Logger.writeMessagesAndExit("There was an error reading the parametric file",
                     parametricFilePathname, ioe);
         }
-        props.forEach((parameterName, parameterValue) -> {
-            System.out.println("[" + parameterName + "]=[" + parameterValue + "]");
-        });
+        props.forEach((parameterName, parameterValue) -> System.out.println("[" + parameterName + "]=[" + parameterValue + "]"));
     }
 
     private int sumOfDigits(int number) {
