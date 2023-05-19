@@ -13,30 +13,23 @@ import java.io.Reader;
 import java.util.Properties;
 import java.util.Scanner;
 
-public class RandomGameScenarioGenerator {
+public class RandomScenarioGenerator {
     final private String lsep = System.getProperty("line.separator");
     private int numberOfLevels;
 
-    public RandomGameScenarioGenerator() {
+    public RandomScenarioGenerator() {
         System.out.println("Enter the number of levels");
         Scanner read = new Scanner(System.in);
         numberOfLevels = read.nextInt();
         System.out.println();
     }
 
-
-//pathname
-//levelsDurationTimeValues
-
     void generateAndSaveRandomScenarioFile(String scenarioFilePathname) {
         try {
             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(scenarioFilePathname)));
-            EffectsDraw effectsGenerator = new EffectsDraw();
+            RandomEffectsGenerator effectsGenerator = new RandomEffectsGenerator();
 
-            pw.println("#Game scenario generator" + lsep
-                    + "#" + "It allows you to generate scenarios for separate parametric files" + lsep
-                    + "#" + lsep
-                    + "numberOfLevels=" + numberOfLevels);
+            pw.println("#Game scenario generator" + lsep + "#" + "It allows you to generate scenarios for separate parametric files" + lsep + "#" + lsep + "numberOfLevels=" + numberOfLevels);
             pw.printf("levelsMusicFilesPathnames=");
             for (int i = 0; i < numberOfLevels; i++) {
                 pw.printf(effectsGenerator.drawMusicFilePathname() + " ");
@@ -64,11 +57,9 @@ public class RandomGameScenarioGenerator {
         try (Reader r = new BufferedReader(new FileReader(fileName))) {
             props.load(r);
         } catch (FileNotFoundException fnfe) {
-            Logger.writeMessagesAndExit("Scenario file not found",
-                    fileName, fnfe);
+            Logger.writeMessagesAndExit("Scenario file not found", fileName, fnfe);
         } catch (IOException ioe) {
-            Logger.writeMessagesAndExit("There was an error reading the scenario file",
-                    fileName, ioe);
+            Logger.writeMessagesAndExit("There was an error reading the scenario file", fileName, ioe);
         }
         props.forEach((parameterName, parameterValue) -> {
             System.out.println("[" + parameterName + "]=[" + parameterValue + "]");
@@ -77,8 +68,8 @@ public class RandomGameScenarioGenerator {
 
     public static void main(String[] args) {
         String scenarioFilePathname = "./src/main/resources/configuration/scenario.txt";
-        RandomGameScenarioGenerator gsg = new RandomGameScenarioGenerator();
-        gsg.generateAndSaveRandomScenarioFile(scenarioFilePathname);
-        gsg.loadAndPrintScenarioFile(scenarioFilePathname);
+        RandomScenarioGenerator rsg = new RandomScenarioGenerator();
+        rsg.generateAndSaveRandomScenarioFile(scenarioFilePathname);
+        rsg.loadAndPrintScenarioFile(scenarioFilePathname);
     }
 }

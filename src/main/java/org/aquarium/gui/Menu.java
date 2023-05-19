@@ -101,7 +101,7 @@ public class Menu extends JPanel {
 
     public void setScore() {
         PointsService cp = PointsService.getInstance();
-        score.setText("score: " + cp.getGamePoints());
+        score.setText("score: " + cp.getPoints());
     }
 
     public void setLevel() {

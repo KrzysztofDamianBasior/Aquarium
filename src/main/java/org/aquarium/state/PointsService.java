@@ -21,7 +21,7 @@ public class PointsService {
         pointsEarned = 0;
     }
 
-    public int getGamePoints() {
+    public int getPoints() {
         return pointsEarned;
     }
 }

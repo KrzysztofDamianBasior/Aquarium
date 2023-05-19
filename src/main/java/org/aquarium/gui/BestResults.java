@@ -18,7 +18,7 @@ public class BestResults {
     private int[] scoresTable;
     private String[] datesTable;
 
-    private final String bestResultsPathname = "./src/main/resources/configuration/bestResults.txt";
+    private final String bestResultsPathname = "./src/main/resources/persistence/bestResults.txt";
     private static final BestResults instance = new BestResults();
 
     public static BestResults getInstance() {

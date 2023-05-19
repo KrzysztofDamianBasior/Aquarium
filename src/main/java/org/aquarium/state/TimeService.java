@@ -9,7 +9,6 @@ import javax.swing.Timer;
 public class TimeService implements ActionListener {
     private int time;
     private Timer clock;
-
     private Menu sideMenu;
     private TimerState timerState;
 
@@ -25,7 +24,6 @@ public class TimeService implements ActionListener {
     private TimeService() {
         time = 0;
         timerState = TimerState.DISABLED;
-
         clock = new Timer(1000, this);
         clock.start();
     }
@@ -33,7 +31,6 @@ public class TimeService implements ActionListener {
     public void connectToGUI(Menu sideMenu) {
         ps = ParametersService.getInstance();
         cs = CoreService.getInstance();
-
         this.sideMenu = sideMenu;
     }
 
@@ -55,21 +52,23 @@ public class TimeService implements ActionListener {
             time = 0;
         }
 
-        if (timerState == TimerState.ENABLED) {
-            if (time < (ps.getLevelDurationTimeValue(cs.getCurrentLevelNumber() - 1))) {
-                sideMenu.setTime(time);
-                double draw = Math.random();
-                if (draw <= 0.2) {
-                    cs.addOneGameObjectToGameBoard();
-                }
-                time++;
-            } else {
-                if (ps.getNumberOfLevels() > cs.getCurrentLevelNumber()) {
-                    stopTimer();
-                    sideMenu.startNextLevel();
+        if (cs != null && ps != null && sideMenu != null) {
+            if (timerState == TimerState.ENABLED) {
+                if (time < (ps.getLevelDurationTimeValue(cs.getCurrentLevelNumber() - 1))) {
+                    sideMenu.setTime(time);
+                    double draw = Math.random();
+                    if (draw <= 0.2) {
+                        cs.addOneGameObjectToGameBoard();
+                    }
+                    time++;
                 } else {
-                    stopTimer();
-                    sideMenu.endGame();
+                    if (ps.getNumberOfLevels() > cs.getCurrentLevelNumber()) {
+                        stopTimer();
+                        sideMenu.startNextLevel();
+                    } else {
+                        stopTimer();
+                        sideMenu.endGame();
+                    }
                 }
             }
         }

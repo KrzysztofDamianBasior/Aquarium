@@ -13,7 +13,7 @@ import java.io.Reader;
 import java.util.Properties;
 
 
-public class RandomParametricFileGenerator {
+public class RandomParametersGenerator {
     final private String lsep = System.getProperty("line.separator");
     final private String[] gameNames = {
             "Aqua", "Aquarium", "Fishes", "CatchAndGo",
@@ -28,14 +28,14 @@ public class RandomParametricFileGenerator {
             "squares", "rectangles", "circles"
     };
 
-    RandomParametricFileGenerator() {
+    RandomParametersGenerator() {
     }
 
     public static void main(String... args) {
-        RandomParametricFileGenerator pfg = new RandomParametricFileGenerator();
+        RandomParametersGenerator rpg = new RandomParametersGenerator();
         String parametricFilePathname = "./src/main/resources/configuration/parameters.txt";
-        pfg.generateAndSaveRandomParametricFile(parametricFilePathname);
-        pfg.loadAndPrintParametricFile(parametricFilePathname);
+        rpg.generateAndSaveRandomParametricFile(parametricFilePathname);
+        rpg.loadAndPrintParametricFile(parametricFilePathname);
     }
 
     private String drawString(String... strings) {

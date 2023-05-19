@@ -16,8 +16,8 @@ public class CoreService {
     }
 
     private int currentLevelNumber;
-    GameBoard gameBoard;
-    Menu sideMenu;
+    private GameBoard gameBoard;
+    private Menu sideMenu;
     private ArrayList<MusicPlayer> musicHandles = new ArrayList<>(10);
     private GameState gameState;
 
@@ -49,7 +49,10 @@ public class CoreService {
     }
 
     public void increaseLevelNumber() {
-        currentLevelNumber++;
+        ParametersService ps = ParametersService.getInstance();
+        if (ps.getNumberOfLevels() > currentLevelNumber) {
+            currentLevelNumber++;
+        }
     }
 
     public void resetCurrentLevelNumber() {
@@ -66,48 +69,56 @@ public class CoreService {
 
 
     public void endLevel() {
-        musicHandles.get(currentLevelNumber - 1).stop();
-        gameBoard.stop();
-        gameBoard.repaint();
-        ts.stopTimer();
-        JOptionPane.showMessageDialog(null, "level completed");
+        if (gameBoard != null && ts != null) {
+            musicHandles.get(currentLevelNumber - 1).stop();
+            gameBoard.stop();
+            gameBoard.repaint();
+            ts.stopTimer();
+            JOptionPane.showMessageDialog(null, "level completed");
+        }
     }
 
     public void goToNextLevel() {
-        gameState = GameState.RUNNING;
-        increaseLevelNumber();
-        ts.resetAndStartTimer();
-        musicHandles.get(currentLevelNumber - 1).play();
-        sideMenu.setLevel();
-        gameBoard.setGameObjectsSpeed(currentLevelNumber);
-        gameBoard.objectsReset(20);
-        gameBoard.start();
+        if (ts != null && sideMenu != null && gameBoard != null) {
+            gameState = GameState.RUNNING;
+            increaseLevelNumber();
+            ts.resetAndStartTimer();
+            musicHandles.get(currentLevelNumber - 1).play();
+            sideMenu.setLevel();
+            gameBoard.setGameObjectsSpeed(currentLevelNumber);
+            gameBoard.objectsReset(20);
+            gameBoard.start();
+        }
     }
 
     public void togglePause() {
-        if (gameState != GameState.PAUSED) {
-            gameBoard.animationPause();
-            musicHandles.get(currentLevelNumber - 1).stop();
-            gameState = GameState.PAUSED;
-        } else {
-            gameBoard.animationPause();
-            musicHandles.get(currentLevelNumber - 1).play();
-            gameState = GameState.RUNNING;
+        if (ts != null && gameBoard != null) {
+            if (gameState != GameState.PAUSED) {
+                gameBoard.animationPause();
+                musicHandles.get(currentLevelNumber - 1).stop();
+                gameState = GameState.PAUSED;
+            } else {
+                gameBoard.animationPause();
+                musicHandles.get(currentLevelNumber - 1).play();
+                gameState = GameState.RUNNING;
+            }
         }
     }
 
     public void endGame() {
-        if (gameState == GameState.RUNNING) {
-            endLevel();
-            BestResults br = BestResults.getInstance();
-            GregorianCalendar data = new GregorianCalendar();
-            br.save(ps.getGamePoints(), data.getTime().toString());
-            br.showScores();
-            gameState = GameState.INACTIVE;
-            gameBoard.stop();
-            gameBoard.repaint();
-            ps.resetPoints();
-            resetCurrentLevelNumber();
+        if (ps != null && gameBoard != null) {
+            if (gameState == GameState.RUNNING) {
+                endLevel();
+                BestResults br = BestResults.getInstance();
+                GregorianCalendar data = new GregorianCalendar();
+                br.save(ps.getPoints(), data.getTime().toString());
+                br.showScores();
+                gameState = GameState.INACTIVE;
+                gameBoard.stop();
+                gameBoard.repaint();
+                ps.resetPoints();
+                resetCurrentLevelNumber();
+            }
         }
     }
 
@@ -120,10 +131,14 @@ public class CoreService {
     }
 
     public void addOneGameObjectToGameBoard() {
-        gameBoard.addOneGameObject();
+        if (gameBoard != null) {
+            gameBoard.addOneGameObject();
+        }
     }
 
     public void addManyGameObjectsToGameBoard(int numberOfGameObjectsToAdd) {
-        gameBoard.addManyGameObjects(numberOfGameObjectsToAdd);
+        if (gameBoard != null) {
+            gameBoard.addManyGameObjects(numberOfGameObjectsToAdd);
+        }
     }
 }

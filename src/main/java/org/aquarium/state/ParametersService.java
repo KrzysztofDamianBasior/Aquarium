@@ -92,22 +92,22 @@ public class ParametersService {
         return gameObjects;
     }
 
-    private int numberOfLevels = 0;
-    private String[] levelsMusicFilesPathnames = {};
-    private String[] levelsBackgroundFilesPathnames = {};
-    private int[] levelsDurationTimeValues = {};
-    private String gameName = "";
-    private String levelName = "";
-    private String extensionName = "";
-    private int numberOfDifficultyLevels = 0;
-    private int amountOfChangeInDifficulty = 0;
-    private int initialBoardWidth = 0;
-    private int initialBoardHeight = 0;
-    private double initialWidthOfTheGameObjectAsAPercentageOfBoardInitialWidth = 0.0;
-    private String menuBackground = "";
-    private String menuBackgroundFilePathname = "";
-    private String gameObjects = "";
-    private int[] menuBackgroundColor = {};
+    private int numberOfLevels = 1;
+    private String[] levelsMusicFilesPathnames = {"src/main/resources/assets/musicFiles/[NoCopyrightMusic]Island-MBB.WAV"};
+    private String[] levelsBackgroundFilesPathnames = {"src/main/resources/assets/backgrounds/gameBackground3.jpg"};
+    private int[] levelsDurationTimeValues = {50};
+    private String gameName = "defaultName";
+    private String levelName = "defaultLevel";
+    private String extensionName = "default";
+    private int numberOfDifficultyLevels = 1;
+    private int amountOfChangeInDifficulty = 1;
+    private int initialBoardWidth = 1000;
+    private int initialBoardHeight = 500;
+    private double initialWidthOfTheGameObjectAsAPercentageOfBoardInitialWidth = 5;
+    private String menuBackground = "graphicFile";
+    private String menuBackgroundFilePathname = "src/main/resources/assets/backgrounds/menuBackground.jpg";
+    private String gameObjects = "graphicFile";
+    private int[] menuBackgroundColor = {255, 255, 255};
 
     private ParametersService() {
         Properties props = new Properties();

@@ -1,6 +1,6 @@
 package org.aquarium.utils.configuration;
 
-public class EffectsDraw {
+public class RandomEffectsGenerator {
     final private String[] musicFilesPathnames = {
             "src/main/resources/assets/musicFiles/[NoCopyrightMusic]LastSummer-Ikson.WAV",
             "src/main/resources/assets/musicFiles/[NoCopyrightMusic]Island-MBB.WAV",
@@ -24,7 +24,7 @@ public class EffectsDraw {
         return min + (int) (Math.random() * (1L + max - min));
     }
 
-    private final String draw(String... strings) {
+    private String draw(String... strings) {
         return strings[(int) (Math.random() * strings.length)];
     }
 
