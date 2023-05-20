@@ -20,7 +20,7 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
         super();
-        ParametersService gp = ParametersService.getInstance();
+        ParametersService parametersService = ParametersService.getInstance();
 
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
@@ -43,7 +43,7 @@ public class MainFrame extends JFrame {
         gameMenu.add(scores);
         helpMenu.add(information);
 
-        this.setSize(gp.getInitialBoardWidth() + menuWidth, gp.getInitialBoardHeight());
+        this.setSize(parametersService.getInitialBoardWidth() + menuWidth, parametersService.getInitialBoardHeight());
         setLayout(new BorderLayout());
 
         sideMenu = new Menu(menuWidth);
@@ -62,7 +62,7 @@ public class MainFrame extends JFrame {
         coreService.connectToGUI(gameBoard, sideMenu);
 
         setLocationByPlatform(true);
-        setTitle(gp.getGameName());
+        setTitle(parametersService.getGameName());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(true);

@@ -27,8 +27,8 @@ public class CoreService {
         return instance;
     }
 
-    private TimeService ts;
-    private PointsService ps;
+    private TimeService timeService;
+    private PointsService pointsService;
 
     private CoreService() {
         currentLevelNumber = 0;
@@ -39,8 +39,8 @@ public class CoreService {
         this.gameBoard = gameBoard;
         this.sideMenu = sideMenu;
 
-        this.ts = TimeService.getInstance();
-        this.ps = PointsService.getInstance();
+        this.timeService = TimeService.getInstance();
+        this.pointsService = PointsService.getInstance();
 
         ParametersService ps = ParametersService.getInstance();
         int numberOfLevels = ps.getNumberOfLevels();
@@ -69,30 +69,30 @@ public class CoreService {
 
 
     public void endLevel() {
-        if (gameBoard != null && ts != null) {
+        if (gameBoard != null && timeService != null) {
             musicHandles.get(currentLevelNumber - 1).stop();
             gameBoard.stop();
             gameBoard.repaint();
-            ts.stopTimer();
+            timeService.stopTimer();
             JOptionPane.showMessageDialog(null, "level completed");
         }
     }
 
     public void goToNextLevel() {
-        if (ts != null && sideMenu != null && gameBoard != null) {
+        if (timeService != null && sideMenu != null && gameBoard != null) {
             gameState = GameState.RUNNING;
             increaseLevelNumber();
-            ts.resetAndStartTimer();
+            timeService.resetAndStartTimer();
             musicHandles.get(currentLevelNumber - 1).play();
             sideMenu.setLevel();
             gameBoard.setGameObjectsSpeed(currentLevelNumber);
-            gameBoard.objectsReset(20);
+            gameBoard.setGameObjectsNumber(20);
             gameBoard.start();
         }
     }
 
     public void togglePause() {
-        if (ts != null && gameBoard != null) {
+        if (timeService != null && gameBoard != null) {
             if (gameState != GameState.PAUSED) {
                 gameBoard.animationPause();
                 musicHandles.get(currentLevelNumber - 1).stop();
@@ -106,23 +106,23 @@ public class CoreService {
     }
 
     public void endGame() {
-        if (ps != null && gameBoard != null) {
+        if (pointsService != null && gameBoard != null) {
             if (gameState == GameState.RUNNING) {
                 endLevel();
                 BestResults br = BestResults.getInstance();
                 GregorianCalendar data = new GregorianCalendar();
-                br.save(ps.getPoints(), data.getTime().toString());
+                br.save(pointsService.getPoints(), data.getTime().toString());
                 br.showScores();
                 gameState = GameState.INACTIVE;
                 gameBoard.stop();
                 gameBoard.repaint();
-                ps.resetPoints();
+                pointsService.resetPoints();
                 resetCurrentLevelNumber();
             }
         }
     }
 
-    boolean isGamePaused() {
+    public boolean isGamePaused() {
         return gameState == GameState.PAUSED;
     }
 

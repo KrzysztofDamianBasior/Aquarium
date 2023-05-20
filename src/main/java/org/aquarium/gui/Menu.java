@@ -26,8 +26,8 @@ public class Menu extends JPanel {
     private JLabel title;
 
     private GameBoard gameBoard;
-    private CoreService cs;
-    ParametersService gp;
+    private CoreService coreService;
+    ParametersService parametersService;
     private MainFrame mainFrame;
 
     private boolean isGamePaused;
@@ -37,10 +37,10 @@ public class Menu extends JPanel {
     public Menu(int width) {
         super();
         this.width = width;
-        gp = ParametersService.getInstance();
+        parametersService = ParametersService.getInstance();
         ts = TimeService.getInstance();
         ts.connectToGUI(this);
-        cs = CoreService.getInstance();
+        coreService = CoreService.getInstance();
 
         isGamePaused = false;
 
@@ -52,18 +52,22 @@ public class Menu extends JPanel {
         nextLevel = new JButton("next level");
 
         score = new JLabel("score: 0/0");
-        time = new JLabel("time: 0/0");
-        levelNumber = new JLabel("level: 0");
-        title = new JLabel(gp.getGameName() + "." + gp.getExtensionName());
+        score.setForeground(new Color(1, 50, 32));
 
-        title.setBounds(width / 3, gp.getInitialBoardHeight() / 12, 200, 30);
-        levelNumber.setBounds(width / 3, 2 * gp.getInitialBoardHeight() / 12, 200, 30);
-        score.setBounds(width / 3, 3 * gp.getInitialBoardHeight() / 12, 200, 30);
-        time.setBounds(width / 3, 4 * gp.getInitialBoardHeight() / 12, 200, 30);
-        start.setBounds(width / 3, 5 * gp.getInitialBoardHeight() / 12, 100, 30);
-        pause.setBounds(width / 3, 6 * gp.getInitialBoardHeight() / 12, 100, 30);
-        end.setBounds(width / 3, 7 * gp.getInitialBoardHeight() / 12, 100, 30);
-        nextLevel.setBounds(width / 3, 8 * gp.getInitialBoardHeight() / 12, 100, 30);
+        time = new JLabel("time: 0/0");
+        time.setForeground(new Color(1, 50, 32));
+        levelNumber = new JLabel("level: 0");
+        levelNumber.setForeground(new Color(1, 50, 32));
+        title = new JLabel(parametersService.getGameName() + "." + parametersService.getExtensionName());
+        title.setForeground(Color.LIGHT_GRAY);
+        title.setBounds(width / 3, parametersService.getInitialBoardHeight() / 12, 200, 30);
+        levelNumber.setBounds(width / 3, 2 * parametersService.getInitialBoardHeight() / 12, 200, 30);
+        score.setBounds(width / 3, 3 * parametersService.getInitialBoardHeight() / 12, 200, 30);
+        time.setBounds(width / 3, 4 * parametersService.getInitialBoardHeight() / 12, 200, 30);
+        start.setBounds(width / 3, 5 * parametersService.getInitialBoardHeight() / 12, 100, 30);
+        pause.setBounds(width / 3, 6 * parametersService.getInitialBoardHeight() / 12, 100, 30);
+        end.setBounds(width / 3, 7 * parametersService.getInitialBoardHeight() / 12, 100, 30);
+        nextLevel.setBounds(width / 3, 8 * parametersService.getInitialBoardHeight() / 12, 100, 30);
 
         start.addActionListener((ActionEvent event) -> startGame());
         pause.addActionListener((ActionEvent event) -> pauseGame());
@@ -81,15 +85,14 @@ public class Menu extends JPanel {
     }
 
     public void paint(Graphics g) {
-        ParametersService gp = ParametersService.getInstance();
-        if (gp.getMenuBackground().equals("solid")) {
+        if (parametersService.getMenuBackground().equals("solid")) {
             super.paintComponent(g);
             this.paintChildren(g);
-            setBackground(new Color(gp.getMenuBackgroundColor(0), gp.getMenuBackgroundColor(1), gp.getMenuBackgroundColor(2)));
+            setBackground(new Color(parametersService.getMenuBackgroundColor(0), parametersService.getMenuBackgroundColor(1), parametersService.getMenuBackgroundColor(2)));
         } else {
             this.paintChildren(g);
             setLayout(new BorderLayout());
-            JLabel background = new JLabel(new ImageIcon(gp.getMenuBackgroundFilePathname()));
+            JLabel background = new JLabel(new ImageIcon(parametersService.getMenuBackgroundFilePathname()));
             add(background);
         }
     }
@@ -105,11 +108,11 @@ public class Menu extends JPanel {
     }
 
     public void setLevel() {
-        levelNumber.setText("level: " + cs.getCurrentLevelNumber() + "/" + gp.getNumberOfLevels());
+        levelNumber.setText("level: " + coreService.getCurrentLevelNumber() + "/" + parametersService.getNumberOfLevels());
     }
 
     public void setTime(int currentTime) {
-        time.setText("Remaining time: " + currentTime + "/" + gp.getLevelDurationTimeValue(cs.getCurrentLevelNumber() - 1));
+        time.setText("Remaining time: " + currentTime + "/" + parametersService.getLevelDurationTimeValue(coreService.getCurrentLevelNumber() - 1));
     }
 
     public void connectToGUI(GameBoard gameBoard, MainFrame mainFrame) {
@@ -118,44 +121,44 @@ public class Menu extends JPanel {
     }
 
     public void startGame() {
-        if (!cs.isGameRunning()) {
-            String[] options = new String[(int) gp.getNumberOfDifficultyLevels()];
-            for (int i = 0; i < gp.getNumberOfDifficultyLevels(); i++)
+        if (!coreService.isGameRunning() && !coreService.isGamePaused()) {
+            String[] options = new String[(int) parametersService.getNumberOfDifficultyLevels()];
+            for (int i = 0; i < parametersService.getNumberOfDifficultyLevels(); i++)
                 options[i] = Integer.toString(i + 1);
 
             int difficultyLevel = JOptionPane.showOptionDialog(null, "Choose a difficulty level: ", "Difficulty level selection", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
             gameBoard.setGameObjectsSpeed(difficultyLevel + 1);
 
-            cs.goToNextLevel();
+            coreService.goToNextLevel();
         }
     }
 
     public void pauseGame() {
-        if (cs.isGameRunning()) {
+        if (coreService.isGameRunning() || coreService.isGamePaused()) {
             if (!isGamePaused) {
                 isGamePaused = true;
                 ts.stopTimer();
-                cs.togglePause();
+                coreService.togglePause();
             } else {
                 isGamePaused = false;
                 ts.resumeTimer();
-                cs.togglePause();
+                coreService.togglePause();
             }
         }
     }
 
     public void startNextLevel() {
-        if (cs.isGameRunning()) {
-            if (cs.getCurrentLevelNumber() < gp.getNumberOfLevels()) {
-                cs.endLevel();
-                cs.goToNextLevel();
+        if (coreService.isGameRunning()) {
+            if (coreService.getCurrentLevelNumber() < parametersService.getNumberOfLevels()) {
+                coreService.endLevel();
+                coreService.goToNextLevel();
             }
         }
         mainFrame.setAnimationSize();
     }
 
     public void endGame() {
-        cs.endGame();
+        coreService.endGame();
     }
 }
 

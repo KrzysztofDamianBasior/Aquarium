@@ -16,15 +16,14 @@ public class GameObject {
     private boolean isObjectMoving;
     private double scale;
     private String objectType;
-
-    private ImageIcon gameObjectImageIcon = null;
-    private Image gameObjectImage = null;
-    private String objectShape = null;
+    private ImageIcon gameObjectImageIcon;
+    private Image gameObjectImage;
+    private String objectShape;
     private GameBoard gameBoard;
 
     public GameObject(GameBoard gameBoard) {
-        ParametersService gp = ParametersService.getInstance();
-        scale = (gp.getInitialWidthOfTheGameObjectAsAPercentageOfBoardInitialWidth());
+        ParametersService parametersService = ParametersService.getInstance();
+        scale = (parametersService.getInitialWidthOfTheGameObjectAsAPercentageOfBoardInitialWidth());
         this.gameBoard = gameBoard;
         isObjectMoving = true;
 
@@ -32,7 +31,7 @@ public class GameObject {
         yPosition = (int) (Math.random() * gameBoard.getHeight());
 
 
-        objectType = gp.getGameObjectsType();
+        objectType = parametersService.getGameObjectsType();
 
         if (objectType.equals("graphicFile")) {
             double draw = Math.random();

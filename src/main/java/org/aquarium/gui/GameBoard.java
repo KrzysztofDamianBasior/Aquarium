@@ -20,7 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class GameBoard extends JPanel implements Runnable {
-    enum BoardState {
+    private enum BoardState {
         TIME_OVER, PAUSED, DISABLED, ENABLED,
     }
 
@@ -31,23 +31,23 @@ public class GameBoard extends JPanel implements Runnable {
     private int gameObjectsNumber;
     private int objectsSpeed;
     private int difficultyLevel;
-    private double objectSize;
+    private double widthOfTheGameObjectAsAPercentageOfBoardWidth;
 
-    JLabel background;
+    private JLabel background;
 
-    private ParametersService ps;
-    private CoreService cs;
+    private ParametersService parametersServices;
+    private CoreService coreService;
 
-    BoardState boardState;
-    Menu menu;
+    private BoardState boardState;
+    private Menu menu;
 
     public GameBoard(Menu side_menu) {
         super();
-        ps = ParametersService.getInstance();
-        cs = CoreService.getInstance();
+        parametersServices = ParametersService.getInstance();
+        coreService = CoreService.getInstance();
 
-        height = ps.getInitialBoardHeight();
-        width = ps.getInitialBoardWidth();
+        height = parametersServices.getInitialBoardHeight();
+        width = parametersServices.getInitialBoardWidth();
 
         difficultyLevel = 1;
         boardState = BoardState.DISABLED;
@@ -57,7 +57,7 @@ public class GameBoard extends JPanel implements Runnable {
         Cursor myCursor = tk.createCustomCursor(img, new Point(10, 10), "dynamite stick");
         setCursor(myCursor);
 
-        objectSize = ps.getInitialWidthOfTheGameObjectAsAPercentageOfBoardInitialWidth();
+        widthOfTheGameObjectAsAPercentageOfBoardWidth = parametersServices.getInitialWidthOfTheGameObjectAsAPercentageOfBoardInitialWidth();
         gameObjectsNumber = 20;
         for (int i = 0; i < gameObjectsNumber; i++) {
             gameObjects.add(new GameObject(this));
@@ -66,17 +66,12 @@ public class GameBoard extends JPanel implements Runnable {
 
         addMouseListener(new MouseHandler());
         menu = side_menu;
-
-        this.background = new JLabel(new ImageIcon(ps.getMenuBackgroundFilePathname()));
     }
 
-    public boolean deleteObject(int x, int y) {
-        int size = (int) (width * objectSize / 100);
+    public boolean deleteGameObjectAtPosition(int x, int y) {
+        int size = (int) (width * widthOfTheGameObjectAsAPercentageOfBoardWidth / 100);
         for (int i = 0; i < gameObjects.size(); i++) {
-            if (x >= gameObjects.get(i).getXPosition()
-                    && y >= gameObjects.get(i).getYPosition()
-                    && x <= (gameObjects.get(i).getXPosition() + size)
-                    && y <= (gameObjects.get(i).getYPosition() + size)) {
+            if (x >= gameObjects.get(i).getXPosition() && y >= gameObjects.get(i).getYPosition() && x <= (gameObjects.get(i).getXPosition() + size) && y <= (gameObjects.get(i).getYPosition() + size)) {
                 gameObjects.remove(i);
                 gameObjectsNumber--;
                 return true;
@@ -88,10 +83,10 @@ public class GameBoard extends JPanel implements Runnable {
     public void paint(Graphics g) {
         this.paintChildren(g);
         setLayout(new BorderLayout());
-        this.background = new JLabel(new ImageIcon(ps.getLevelBackgroundFilePathname(0)));
+        this.background = new JLabel(new ImageIcon(parametersServices.getLevelBackgroundFilePathname(0)));
         add(background);
 
-        if (boardState == BoardState.ENABLED) {
+        if (boardState == BoardState.ENABLED || boardState == BoardState.PAUSED) {
             for (int i = 0; i < gameObjects.size(); i++) {
                 (gameObjects.get(i)).paint(g);
             }
@@ -102,7 +97,7 @@ public class GameBoard extends JPanel implements Runnable {
         }
     }
 
-    public void timeOver() {
+    public void setTimeOver() {
         boardState = BoardState.TIME_OVER;
     }
 
@@ -121,11 +116,10 @@ public class GameBoard extends JPanel implements Runnable {
     }
 
     public Dimension getPreferredSize() {
-        ParametersService gp = ParametersService.getInstance();
-        return new Dimension(gp.getInitialBoardWidth(), gp.getInitialBoardHeight());
+        return new Dimension(parametersServices.getInitialBoardWidth(), parametersServices.getInitialBoardHeight());
     }
 
-    public void objectsReset(int newGameObjectsNumber) {
+    public void setGameObjectsNumber(int newGameObjectsNumber) {
         gameObjects.clear();
         for (int i = 0; i < newGameObjectsNumber; i++) {
             gameObjects.add(new GameObject(this));
@@ -146,10 +140,6 @@ public class GameBoard extends JPanel implements Runnable {
         return width;
     }
 
-    public void startGame() {
-        boardState = BoardState.ENABLED;
-        repaint();
-    }
 
     public void start() {
         boardState = BoardState.ENABLED;
@@ -193,11 +183,9 @@ public class GameBoard extends JPanel implements Runnable {
     }
 
     public void setGameObjectsSpeed(int level) {
-        ParametersService gp = ParametersService.getInstance();
         objectsSpeed = 200 - (20 * difficultyLevel);
-
         for (int i = 0; i < level; i++) {
-            objectsSpeed = (int) (objectsSpeed * gp.getAmountOfChangeInDifficulty() / 100);
+            objectsSpeed = (int) (objectsSpeed * parametersServices.getAmountOfChangeInDifficulty() / 100);
         }
     }
 
@@ -217,7 +205,7 @@ public class GameBoard extends JPanel implements Runnable {
 
         public void mouseClicked(MouseEvent event) {
             if (boardState != BoardState.PAUSED) {
-                boolean removed = deleteObject(event.getX(), event.getY());
+                boolean removed = deleteGameObjectAtPosition(event.getX(), event.getY());
                 PointsService cp = PointsService.getInstance();
                 if (removed) {
                     cp.addPoint();

@@ -9,8 +9,8 @@ import javax.swing.JOptionPane;
 public class Help implements ActionListener {
     public void actionPerformed(ActionEvent event)
     {
-        ParametersService ps = ParametersService.getInstance();
-        String gameName = ps.getGameName();
+        ParametersService parametersService = ParametersService.getInstance();
+        String gameName = parametersService.getGameName();
         String text = (gameName + """
                 
                 click on the objects appearing on the board

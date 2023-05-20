@@ -18,8 +18,8 @@ public class TimeService implements ActionListener {
         return instance;
     }
 
-    private ParametersService ps;
-    private CoreService cs;
+    private ParametersService parametersService;
+    private CoreService coreService;
 
     private TimeService() {
         time = 0;
@@ -29,8 +29,8 @@ public class TimeService implements ActionListener {
     }
 
     public void connectToGUI(Menu sideMenu) {
-        ps = ParametersService.getInstance();
-        cs = CoreService.getInstance();
+        parametersService = ParametersService.getInstance();
+        coreService = CoreService.getInstance();
         this.sideMenu = sideMenu;
     }
 
@@ -52,17 +52,17 @@ public class TimeService implements ActionListener {
             time = 0;
         }
 
-        if (cs != null && ps != null && sideMenu != null) {
+        if (coreService != null && parametersService != null && sideMenu != null) {
             if (timerState == TimerState.ENABLED) {
-                if (time < (ps.getLevelDurationTimeValue(cs.getCurrentLevelNumber() - 1))) {
+                if (time < (parametersService.getLevelDurationTimeValue(coreService.getCurrentLevelNumber() - 1))) {
                     sideMenu.setTime(time);
                     double draw = Math.random();
                     if (draw <= 0.2) {
-                        cs.addOneGameObjectToGameBoard();
+                        coreService.addOneGameObjectToGameBoard();
                     }
                     time++;
                 } else {
-                    if (ps.getNumberOfLevels() > cs.getCurrentLevelNumber()) {
+                    if (parametersService.getNumberOfLevels() > coreService.getCurrentLevelNumber()) {
                         stopTimer();
                         sideMenu.startNextLevel();
                     } else {
