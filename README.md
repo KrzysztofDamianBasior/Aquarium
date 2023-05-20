@@ -8,7 +8,7 @@ An action game where the focus is entirely on catching fish in the aquarium. The
 
 ![Alternate text](docs/screenshots/screenshot-1.png)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#aquarium">back to top</a>)</p>
 
 ## Configuration
 
@@ -22,7 +22,7 @@ To modify application parameters:
 
 You can also generate random parameters, for this purpose use the ready-made random generators available in the src/main/java/org/aquarium/utils/configuration
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#aquarium">back to top</a>)</p>
 
 ## Getting Started
 
@@ -51,16 +51,16 @@ $ cd ~/Aquarium
 $ mvn compile
 $ mvn exec:java -Dexec.mainClass=org.aquarium.Main
 ```
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#aquarium">back to top</a>)</p>
 
 ## Requirements
 
 To clone and run this application, you'll need [Git](https://git-scm.com), [maven](https://maven.apache.org/) and [Java 17](https://www.java.com/en/) installed on your computer.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#aquarium">back to top</a>)</p>
 
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#aquarium">back to top</a>)</p>
